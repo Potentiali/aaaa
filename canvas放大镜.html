@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		#cv{
+			border: 1px solid;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="cv"></canvas>
+	<!-- <img src="jy.jpg" alt=""> -->
+</body>
+<script>
+// var m = Math.floor(Math.random()*(18-2+1)+2);
+// var n = Math.floor(Math.random()*2);
+// alert(m+"-"+n);
+//1.画布绘制图片(目标图像)
+
+//2.绑定鼠标事件（获得鼠标在画布中的坐标点）
+
+//3.drawImage(9参数)(目标图像)
+
+//4.图形组合：destination-in
+
+//arc()（源图像）
+
+	var ctx = cv.getContext("2d");
+	var img = new Image();
+	img.src = "jy.jpg";
+	img.onload = function(){
+		//将画布大小设置为图片大小
+		cv.width = this.width;
+		cv.height = this.height;
+		//绘制图片
+		ctx.drawImage(img,0,0);
+		//为画布绑定事件
+		cv.onmousedown = function(){
+			cv.onmousemove = function(e){
+				//清除画布
+				cv.width = cv.width;
+				//绘制图片
+				ctx.drawImage(img,0,0);
+
+				//获取鼠标在画布中的坐标点
+				var mx = e.clientX - this.offsetLeft;
+				var my = e.clientY - this.offsetTop;
+
+				//设置图形组合
+				ctx.globalCompositeOperation = "destination-out";
+
+				//画个圆
+				ctx.arc(mx,my,100,0,Math.PI*2);
+				ctx.fill();
+
+				//设置图形组合
+				ctx.globalCompositeOperation = "destination-over";
+
+				//鼠标点为中心截取图片
+				ctx.drawImage(img,mx-50,my-50,100,100,mx-100,my-100,200,200);
+
+			}
+			cv.onmouseup = function(){
+				this.onmousemove = null;
+				//让放大镜消失
+				//清除画布
+				cv.width = cv.width;
+				//绘制图片
+				ctx.drawImage(img,0,0);
+			}
+		}
+
+
+
+	}
+
+
+
+
+
+
+</script>
+</html>
